@@ -1,0 +1,3 @@
+[submodule ".\\backend\\rest-api-nodejs-mongodb\\"]
+	path = .\\backend\\rest-api-nodejs-mongodb\\
+	url = https://github.com/maitraysuthar/rest-api-nodejs-mongodb.git
