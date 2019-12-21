@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/style/theme.dart' as Theme;
 import 'package:frontend/utils/bubble_indication_painter.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart';
+import 'package:flutter/foundation.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -48,6 +52,7 @@ class _LoginPageState extends State<LoginPage>
       body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
           overscroll.disallowGlow();
+          return null;
         },
         child: SingleChildScrollView(
               child: Container(
@@ -332,8 +337,30 @@ class _LoginPageState extends State<LoginPage>
                             fontFamily: "WorkSansBold"),
                       ),
                     ),
-                    onPressed: () =>
-                        showInSnackBar("Login button pressed")),
+                    onPressed: () async {
+                        showInSnackBar("Login button pressed");
+                        final username = 'username';
+                        final password = 'password';
+                        final credentials = '$username:$password';
+                        final stringToBase64 = utf8.fuse(base64);
+                        final encodedCredentials = stringToBase64.encode(credentials);
+                        Map<String, String> headers = {
+                          HttpHeaders.contentTypeHeader: "application/json", // or whatever
+                          HttpHeaders.authorizationHeader: "Basic $encodedCredentials",
+                        };
+                        String url = 'http://localhost:3000/api/auth/register?=';
+                        // Map<String, String> headers = {"Content-type": "application/json"};
+                        String json = '{"title": "Hello", "body": "body text", "userId": 1}';
+                        // make POST request
+                        Response response = await post(url, headers: headers, body: json);
+                        // check the status code for the result
+                        int statusCode = response.statusCode;
+                        // this API passes back the id of the new item added to the body
+                        String body = response.body;
+                        debugPrint('statusCode: $statusCode');
+                        debugPrint('body: $body');
+                    }
+                )
               ),
             ],
           ),
