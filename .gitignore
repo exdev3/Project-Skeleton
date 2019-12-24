@@ -61,7 +61,7 @@ typings/
 .next
 
 #vs code configurations
-.vscode/
+#.vscode/
 
 
 
@@ -88,7 +88,7 @@ typings/
 .classpath
 .project
 .settings/
-.vscode/
+#.vscode/
 
 # Flutter repo-specific
 /bin/cache/
