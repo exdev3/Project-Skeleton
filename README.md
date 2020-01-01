@@ -7,12 +7,12 @@ Flutter frontend, Nodejs + Express + MongoDB backend
    https://github.com/maitraysuthar/rest-api-nodejs-mongodb.git  
    https://github.com/huextrat/TheGorgeousLogin
 
-## Login Page
-![Alt text](loginpage.png?raw=true "Title")
+## Login Page  
+![Alt text](loginpage.PNG?raw=true "Title")
 
 ## How To Run
-1. Run MongoDB
-2. Run Backend
-![Alt text](nodemonrun.png?raw=true "Title")
-3. Run Frontend
-![Alt text](flutterrun.png?raw=true "Title")
+1. Run MongoDB  
+2. Run Backend  
+![Alt text](nodemonrun.PNG?raw=true "Title")  
+3. Run Frontend  
+![Alt text](flutterrun.PNG?raw=true "Title")  
