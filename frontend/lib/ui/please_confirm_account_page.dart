@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_appavailability/flutter_appavailability.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/style/theme.dart' as Theme;
-import 'package:frontend/utils/bubble_indication_painter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:frontend/utils/to_backend.dart';
 
@@ -29,9 +31,7 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
   TextEditingController loginEmailController = new TextEditingController();
   TextEditingController loginPasswordController = new TextEditingController();
 
-  bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
-  bool _obscureTextSignupConfirm = true;
 
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupFirstNameController = new TextEditingController();
@@ -79,10 +79,6 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
                           height: 250.0,
                           fit: BoxFit.fill,
                           image: new AssetImage('assets/img/login_logo.png')),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 5.0),
-                      child: _buildMenuBar(context),
                     ),
                     Expanded(
                       flex: 2,
@@ -160,54 +156,6 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
     ));
   }
 
-  Widget _buildMenuBar(BuildContext context) {
-    return Container(
-      width: 300.0,
-      height: 50.0,
-      decoration: BoxDecoration(
-        color: Color(0x552B2B2B),
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-      ),
-      child: CustomPaint(
-        painter: TabIndicationPainter(pageController: _pageController),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onPressed: _onSignInButtonPress,
-                child: Text(
-                  "Existing",
-                  style: TextStyle(
-                      color: left,
-                      fontSize: 16.0,
-                      fontFamily: "WorkSansSemiBold"),
-                ),
-              ),
-            ),
-            //Container(height: 33.0, width: 1.0, color: Colors.white),
-            Expanded(
-              child: FlatButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onPressed: _onSignUpButtonPress,
-                child: Text(
-                  "New",
-                  style: TextStyle(
-                      color: right,
-                      fontSize: 16.0,
-                      fontFamily: "WorkSansSemiBold"),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildSignIn(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
@@ -259,109 +207,10 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
                       ),
                     ),
                     onPressed: () {
-                        showInSnackBar("Login button pressed");
+                        showInSnackBar("Opening email app...");
+                        openEmailApp(context);
                     }
                 )
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: FlatButton(
-                onPressed: () {},
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: "WorkSansMedium"),
-                )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white10,
-                          Colors.white,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Text(
-                    "Or",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontFamily: "WorkSansMedium"),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.white10,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 40.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Facebook button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Google button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.google,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
               ),
             ],
           ),
@@ -567,21 +416,8 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
     );
   }
 
-  void _onSignInButtonPress() {
-    _pageController.animateToPage(0,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
-  }
 
-  void _onSignUpButtonPress() {
-    _pageController?.animateToPage(1,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
-  }
 
-  void _toggleLogin() {
-    setState(() {
-      _obscureTextLogin = !_obscureTextLogin;
-    });
-  }
 
   void _toggleSignup() {
     setState(() {
@@ -589,9 +425,19 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
     });
   }
 
-  void _toggleSignupConfirm() {
-    setState(() {
-      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
-    });
+
+  void openEmailApp(BuildContext context){
+    try{
+        AppAvailability.launchApp(Platform.isIOS ? "message://" : "com.google.android.gm").then((_) {
+                print("App Email launched!");
+              }).catchError((err) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("App Email not found!")
+                ));
+                print(err);
+              });
+    } catch(e) {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Email App not found!")));
+    }
   }
 }

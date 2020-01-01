@@ -329,8 +329,8 @@ class _LoginPageState extends State<LoginPage>
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
+                      padding: EdgeInsets.only(
+                          top: 10.0, bottom: 5.0, left: 40.0, right: 40.0),
                       child: Text(
                         "LOGIN",
                         style: TextStyle(
@@ -340,7 +340,7 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () async {
-                      showInSnackBar("Login button pressed");
+                      showInSnackBar("Logging in...");
                       Response response = await ToBackend.login(loginEmailController.text,loginPasswordController.text);
                       debugPrint(response.statusCode.toString());
                       debugPrint(response.body);
@@ -348,10 +348,18 @@ class _LoginPageState extends State<LoginPage>
                         Navigator.pushNamed(context, '/dashboard');
                       } else {
                         var body = json.decode(response.body);
-                        if (body['data'] && body['data'].length > 0 && body['data'][0] && body['data'][0]['msg']) {
-                          var errorMessage = body['data'][0]['msg'];
-                          showInSnackBar(errorMessage);
+                        var errorMessage = '';
+                        try { 
+                          errorMessage = body['data'][0]['msg'];
                         }
+                        catch(exeption) {}
+                        if (errorMessage == null || errorMessage == '') {
+                          try { 
+                            errorMessage = body['message'];
+                          }
+                          catch(exeption) {}
+                        }
+                        showInSnackBar(errorMessage);
                       }
                     }
                 )
@@ -370,93 +378,6 @@ class _LoginPageState extends State<LoginPage>
                       fontSize: 16.0,
                       fontFamily: "WorkSansMedium"),
                 )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white10,
-                          Colors.white,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Text(
-                    "Or",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontFamily: "WorkSansMedium"),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.white10,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 40.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Facebook button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Google button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.google,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -637,8 +558,8 @@ class _LoginPageState extends State<LoginPage>
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
+                      padding: EdgeInsets.only(
+                          top: 10.0, bottom: 5.0, left: 40.0, right: 40.0),
                       child: Text(
                         "SIGN UP",
                         style: TextStyle(
@@ -648,7 +569,7 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () async {
-                      showInSnackBar("SignUp button pressed");
+                      showInSnackBar("Signing Up...");
                       Response response = await ToBackend.register(signupEmailController.text,signupPasswordController.text,signupFirstNameController.text,signupLastNameController.text);
                       debugPrint(response.statusCode.toString());
                       debugPrint(response.body);
@@ -688,12 +609,6 @@ class _LoginPageState extends State<LoginPage>
   void _toggleSignup() {
     setState(() {
       _obscureTextSignup = !_obscureTextSignup;
-    });
-  }
-
-  void _toggleSignupConfirm() {
-    setState(() {
-      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
     });
   }
 }
