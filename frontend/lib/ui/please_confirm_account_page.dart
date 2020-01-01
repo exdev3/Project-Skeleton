@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_appavailability/flutter_appavailability.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:frontend/style/theme.dart' as Theme;
 import 'package:flutter/foundation.dart';
@@ -207,8 +204,7 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
                       ),
                     ),
                     onPressed: () {
-                        showInSnackBar("Opening email app...");
-                        openEmailApp(context);
+                        // showInSnackBar("Opening email app...");
                     }
                 )
               ),
@@ -426,18 +422,4 @@ class _PleaseConfirmAccountPageState extends State<PleaseConfirmAccountPage>
   }
 
 
-  void openEmailApp(BuildContext context){
-    try{
-        AppAvailability.launchApp(Platform.isIOS ? "message://" : "com.google.android.gm").then((_) {
-                print("App Email launched!");
-              }).catchError((err) {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("App Email not found!")
-                ));
-                print(err);
-              });
-    } catch(e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Email App not found!")));
-    }
-  }
 }
